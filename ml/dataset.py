@@ -1,18 +1,11 @@
 import os
 from pathlib import Path
-from typing import List, Tuple, Callable
+from typing import Callable, List, Tuple
 import logging
 
 from PIL import Image
 import torch
-from torch.utils.data import Dataset, DataLoader
-
-# Import preprocessing
-import sys
-if __name__ == '__main__':
-    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from utils.preprocess import get_transform
+from torch.utils.data import Dataset
 
 logger = logging.getLogger(__name__)
 
@@ -106,49 +99,3 @@ class AIDetectionDataset(Dataset):
                 # If the dataset is empty, we must break to avoid infinite loop
                 if len(self.samples) == 0:
                     raise RuntimeError("Dataset is empty or contains no valid images.")
-
-
-# --- Example Usage Snippet ---
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
-    
-    print("Setting up the Dataset and Preprocessing Pipeline...")
-    
-    # 1. Create a dummy dataset directory structure and images for demonstration
-    import tempfile
-    
-    with tempfile.TemporaryDirectory() as temp_dir:
-        train_dir = Path(temp_dir) / 'dataset' / 'train'
-        (train_dir / 'real').mkdir(parents=True, exist_ok=True)
-        (train_dir / 'ai').mkdir(parents=True, exist_ok=True)
-        
-        # Create an RGB image (simulating real photo)
-        Image.new('RGB', (300, 300), color='green').save(train_dir / 'real' / 'real_01.jpg')
-        # Create a Grayscale image (simulating a BW AI generated image)
-        Image.new('L', (400, 400), color=128).save(train_dir / 'ai' / 'ai_01.png')
-        # Create a dummy corrupted file to test the fault-tolerance
-        with open(train_dir / 'real' / 'real_corrupted.jpg', 'w') as f:
-            f.write("I am not an image file")
-            
-        print(f"\nCreated mock dataset at {train_dir}")
-        
-        # 2. Load the transformations
-        transform = get_transform(is_train=True)
-        
-        # 3. Initialize the PyTorch Dataset
-        train_dataset = AIDetectionDataset(root_dir=str(train_dir), transform=transform)
-        print(f"Loaded dataset with {len(train_dataset)} samples.")
-        
-        # 4. Use DataLoader for batching
-        dataloader = DataLoader(train_dataset, batch_size=2, shuffle=True)
-        
-        # Fetch batches 
-        for images, labels in dataloader:
-            print(f"\nBatch Information:")
-            print(f"- Images shape: {images.shape}")
-            print(f"- Labels: {labels}")
-            
-            assert images.shape[1] == 3, "Failed: Images should have 3 channels (Grayscale -> RGB conversion failed)"
-            assert images.shape[2] == 224 and images.shape[3] == 224, "Failed: Images were not resized to 224x224"
-            print("\nVerification Successful: 3 Channels, Resized correctly, Corrupted image safely skipped!")
-            break

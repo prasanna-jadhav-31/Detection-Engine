@@ -1,13 +1,4 @@
-import torch
 from torchvision import transforms
-
-def preprocess_data(raw_data):
-    """
-    Placeholder: Clean and preprocess data before passing to the ML model.
-    (Restored to prevent breaking main.py)
-    """
-    # logic to normalize, extract features, etc.
-    return raw_data
 
 def get_transform(is_train: bool = True):
     """
@@ -45,7 +36,6 @@ def get_transform(is_train: bool = True):
         ),
     ])
 
-    # Add training-only tensor transforms
     if is_train:
         pipeline.append(transforms.RandomErasing(p=0.2))
 
