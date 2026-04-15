@@ -1,0 +1,69 @@
+# ----------------------------
+# 🔹 Python / ML
+# ----------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.env
+
+# Model files
+*.pth
+*.pt
+*.h5
+*.onnx
+
+# Dataset / data
+dataset/
+data/
+*.csv
+*.zip
+
+# Logs
+logs/
+*.log
+
+# ----------------------------
+# 🔹 Node / Frontend
+# ----------------------------
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ----------------------------
+# 🔹 System / Editor
+# ----------------------------
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ----------------------------
+# 🔹 Build / temp
+# ----------------------------
+build/
+tmp/
+temp/
+
+# ----------------------------
+# 🔹 Misc
+# ----------------------------
+coverage/
+.cache/
